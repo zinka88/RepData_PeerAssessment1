@@ -1,4 +1,5 @@
 ## Introduction
+## Updated by Anna Zink on 11/15/2014
 
 It is now possible to collect a large amount of data about personal
 movement using activity monitoring devices such as a
