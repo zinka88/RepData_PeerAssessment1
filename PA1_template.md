@@ -19,7 +19,7 @@ library(plyr)
 
 
 ```r
-hist(data$steps, xlab="Steps", main="Historgram of Steps Taken Each Day")
+hist(data$steps, xlab="Steps", main="Histogram of Steps Taken Each Day")
 ```
 
 ![plot of chunk dailyactivity](figure/dailyactivity-1.png) 
@@ -27,41 +27,49 @@ hist(data$steps, xlab="Steps", main="Historgram of Steps Taken Each Day")
 ```r
 mean<-mean(data$steps,na.rm=TRUE)
 median<-median(data$steps,na.rm=TRUE)
+```
+The mean and median of steps taken each day is 37.3825996 and 0, respectively. 
 
+
+```r
 avg_steps<-tapply(data$steps, data$interval, mean, na.rm=TRUE)
 intervals<-unique(data$interval)
 
 plot(intervals,avg_steps,type="l",xlab="5-minute interval",ylab="Avg Steps")
 ```
 
-![plot of chunk dailyactivity](figure/dailyactivity-2.png) 
+![plot of chunk dailyactivity2](figure/dailyactivity2-1.png) 
 
 ```r
 max<-which(avg_steps==max(avg_steps))
 maxint<-names(max)
 ```
-The mean and median of steps taken each day is 37.3825996 and 0, respectively. The max number of steps, averaged across days, occurs in 5-minute interval 835.
+The max number of steps, averaged across days, occurs in 5-minute interval 835.
 
 ## Imputing missing values
 
 ```r
 nmissing<-sum(is.na(data))
+```
+There are 2304 rows of missing data. Any day missing a 5-minute interval value of steps, will use the mean of that 5 minute interval accross all days. 
+
+
+```r
 missIndex<-is.na(data$steps)
 avg_steps_all<-rep(avg_steps, 61)
 avg_steps_sub<-avg_steps_all[missIndex]
 steps2<-replace(data$steps, is.na(data$steps),avg_steps_sub)
 data2<-cbind(data, steps2)
 
-hist(data2$steps2, xlab="Steps", main="Historgram of Steps Taken Each Day")
+hist(data2$steps2, xlab="Steps", main="Histogram of Steps Taken Each Day, Imputing Missing Values")
 ```
 
-![plot of chunk missing](figure/missing-1.png) 
+![plot of chunk missing2](figure/missing2-1.png) 
 
 ```r
 mean2<-mean(data2$steps2,na.rm=TRUE)
 median2<-median(data2$steps2,na.rm=TRUE)
 ```
-There are 2304 rows of missing data. Any day missing a 5-minute interval value of steps, will use the mean of that 5 minute interval accross all days. 
 The mean and median of steps taken each day, when missing values are imputed, is 37.3825996 and 0, respectively. 
 
 ## Are there differences in activity patterns between weekdays and weekends?

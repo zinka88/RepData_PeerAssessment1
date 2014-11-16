@@ -18,10 +18,13 @@ library(plyr)
 ## What is the average daily activity pattern?
 
 ```{r dailyactivity}
-hist(data$steps, xlab="Steps", main="Historgram of Steps Taken Each Day")
+hist(data$steps, xlab="Steps", main="Histogram of Steps Taken Each Day")
 mean<-mean(data$steps,na.rm=TRUE)
 median<-median(data$steps,na.rm=TRUE)
+```
+The mean and median of steps taken each day is `r mean` and `r median`, respectively. 
 
+```{r dailyactivity2}
 avg_steps<-tapply(data$steps, data$interval, mean, na.rm=TRUE)
 intervals<-unique(data$interval)
 
@@ -30,22 +33,25 @@ plot(intervals,avg_steps,type="l",xlab="5-minute interval",ylab="Avg Steps")
 max<-which(avg_steps==max(avg_steps))
 maxint<-names(max)
 ```
-The mean and median of steps taken each day is `r mean` and `r median`, respectively. The max number of steps, averaged across days, occurs in 5-minute interval `r maxint`.
+The max number of steps, averaged across days, occurs in 5-minute interval `r maxint`.
 
 ## Imputing missing values
 ```{r missing}
 nmissing<-sum(is.na(data))
+```
+There are `r nmissing` rows of missing data. Any day missing a 5-minute interval value of steps, will use the mean of that 5 minute interval accross all days. 
+
+```{r missing2}
 missIndex<-is.na(data$steps)
 avg_steps_all<-rep(avg_steps, 61)
 avg_steps_sub<-avg_steps_all[missIndex]
 steps2<-replace(data$steps, is.na(data$steps),avg_steps_sub)
 data2<-cbind(data, steps2)
 
-hist(data2$steps2, xlab="Steps", main="Historgram of Steps Taken Each Day")
+hist(data2$steps2, xlab="Steps", main="Histogram of Steps Taken Each Day, Imputing Missing Values")
 mean2<-mean(data2$steps2,na.rm=TRUE)
 median2<-median(data2$steps2,na.rm=TRUE)
 ```
-There are `r nmissing` rows of missing data. Any day missing a 5-minute interval value of steps, will use the mean of that 5 minute interval accross all days. 
 The mean and median of steps taken each day, when missing values are imputed, is `r mean2` and `r median2`, respectively. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
